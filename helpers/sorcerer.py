@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from requests import get
-import tools as Tools
+import helpers.tools as Tools
 
 
 def get_all_sorcerer():
