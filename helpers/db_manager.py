@@ -6,7 +6,7 @@ connection = sqlite3.connect('tp1.db')
 c = connection.cursor()
 
 def create_db():
-    c.execute('''CREATE TABLE sorcerer
+    c.execute('''CREATE TABLE IF NOT EXISTS sorcerer
     (
     casting_time VARCHAR(255),
     components VARCHAR(255),
@@ -29,20 +29,12 @@ def insert_sorcerers(tab):
     VALUES (?,?,?,?,?,?,?,?,?,?,?)''',tab)
     connection.commit
 
+def display_content():
+    c.execute('''SELECT id, casting_time, components, duration FROM sorcerer''')
+    all_rows = c.fetchall()
+    for row in all_rows:
+        print ('{0} : {1} - {2} - {3}'.format(row[0], row[1], row[2], row[3]))
 
-#DEMO
 
-create_db()
-data=Sorcerer.get_all(1,8)
-pprint(data)
-data1 = [("a", "a", "a", "a", 1, "a", "a", "a", "a", "a"),
-         ("b", "b", "b", "b", 2, "b", "b", "b", "b", "b"),
-         ("c", "c", "c", "c", 3, "c", "c", "c", "c", "c")]
-pprint(data1)
-insert_sorcerers(data)
-c.execute('''SELECT casting_time, components, duration FROM sorcerer''')
-allrows = c.fetchall()
-for row in allrows:
-    print('{0} / {1} / {2}'.format(row[0], row[1], row[2]))
 
 
