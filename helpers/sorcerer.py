@@ -2,10 +2,10 @@ from bs4 import BeautifulSoup
 from requests import get
 import helpers.tools as Tools
 
-
 def get_all_sorcerer(start, end):
-    sorcerer_array = {}
+    sorcerer_array = []
     for index in range(start, end):
+        print("Wrapper - Page", index, "on", end)
         url = "http://www.dxcontent.com/SDB_SpellBlock.asp?SDBID=" + str(index)
         r = get(url).text
         soup = BeautifulSoup(r, 'html.parser').find("div",{'class':'SpellDiv'})
@@ -43,7 +43,7 @@ def get_all_sorcerer(start, end):
             "spell_resistance": spell_resistance,
             "description": description
         }
-        sorcerer_array[index] = sorcerer
+        sorcerer_array.append(sorcerer)
 
     return sorcerer_array
 
