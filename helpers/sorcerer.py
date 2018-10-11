@@ -67,7 +67,7 @@ def get_casting_time(casting_time):
 
 
 def get_component(component):
-    component_value = Tools.string_between_two_others('<b>Components</b>', '(', component)
+    component_value = Tools.string_between_two_others('<b>Components</b>', '</p>', component)
     return component_value
 
 

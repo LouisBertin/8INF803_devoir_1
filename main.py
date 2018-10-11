@@ -40,7 +40,8 @@ while option:
             pprint(spell['title'])
         print("\n The spell List (with more info) is stored in the projet folder, it's named data.txt \n\n")
     else:
-        print("\n Don't know what you mean, try again")
+        option = False
+        print("\n Bye, see you soon!")
 
 
 
