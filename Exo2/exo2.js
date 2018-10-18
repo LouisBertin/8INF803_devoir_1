@@ -1,82 +1,94 @@
 
-// Init MongoDB
+// Import MongoDB 
 const MongoClient = require("mongodb").MongoClient;
 
+// MongoDB localhost url
 const url = "mongodb://localhost:27017/";
-const dbKey = "matrix";
 
+// Database name
+const dbName = "test";
 
 // Create graph
 const graph = [
-  { _id: "A", value: { adjlist: ["B", "C"], rank: 1 } },
-  { _id: "B", value: { adjlist: ["C"], rank: 1 } },
-  { _id: "C", value: { adjlist: ["A"], rank: 1 } },
-  { _id: "D", value: { adjlist: ["C"], rank: 1 } }
+  { _id: "A", value: { linkTo: ["B", "C"], rank: 1 } },
+  { _id: "B", value: { linkTo: ["C"], rank: 1 } },
+  { _id: "C", value: { linkTo: ["A"], rank: 1 } },
+  { _id: "D", value: { linkTo: ["C"], rank: 1 } }
 ];
-
 
 // Connect MongoDB
 MongoClient.connect(
 	url,
 	{ useNewUrlParser: true },
 	function(err, db) {
+		// Throw Err if can't connect
 		if (err) throw err;
-		var matrixDb = db.db(dbKey);
-		var collection = matrixDb.collection("graph");
+		// Connect to database
+		var dataBase = db.db(dbName);
+		var collection = dataBase.collection("graph");
 		collection.deleteMany();
-
-		// Insert collection in mongoDB
+		collection.removeMany(); //Efface tout (sync)
+		
+		
+		// Insert collection in mongoDB and use a promise to perform mapReduce
 		collection.insertMany(graph, { w: 1 }).then(function(result) {
 
-			// Map Function
+			// Map Function (use object "this"
 			var map = function() {
-				var adjlist = this.value.adjlist;
-				var id = this._id;
-				for (i = 0; i < adjlist.length; i++) {
-					emit(adjlist[i], this.value.rank / adjlist.length);
+				var linkTo = this.value.linkTo;
+				var point = this._id;
+				for (i = 0; i < linkTo.length; i++) {
+					emit(linkTo[i], this.value.rank / linkTo.length);
 				}
-				emit(id, adjlist);
-				emit(id, 0);
+				emit(point, linkTo);
+				emit(point, 0);
 			};
 
 			// Reduce Function
 			var reduce = function(key, values) {
-				const DAMPING_FACTOR = 0.85;
-
+			
 				var pageRank = 0.0;
-				var adjlist = [];
+				var linkTo = [];
+				
+				// DampingFactor gived in the exercice
+				const DAMPING_FACTOR = 0.85;
+				
 				for (i = 0; i < values.length; i++) {
 					if (values[i] instanceof Array) {
-						adjlist = values[i]; // Si la valeur est du type array, alors elle représente la matrice d'adjacence qui va être utilisée pour la réinséertion dans MongoDB
+						// If the value is an array type (adjacency matrix), it's used to insert in MongoDB
+						linkTo = values[i]; 
 					} else {
-						pageRank += values[i]; // Sinon, c'est qu'elle représente le pagerank recalculé
+						// Else, it's the calculed pageRank
+						pageRank += values[i]; 
 					}
 				}
+				
+				// New pageRank with the DampingFactor
 				pageRank = 1 - DAMPING_FACTOR + DAMPING_FACTOR * pageRank;
-				return { adjlist: adjlist, rank: pageRank };
+				
+				// Variable used in debug
+				var result = { linkTo: linkTo, rank: pageRank };
+				
+				return result;
 			};
 
+			// Iterate the sequence
 			function iterate(i) {
-				collection.mapReduce(
-					map,
-					reduce,
-					{
-						out: {
-							replace: "graph"
-						}
-					},
+				collection.mapReduce(map, reduce, {out: {replace: "graph"}},
 					function(err, result) {
+						// Throw error if error
 						if (err) throw err;
-						// Récupère les données en base pour afficher la progression des itérations
+						// Get data from databases to print progress
 						collection
 							.find()
 							.toArray()
 							.then(function(data) {
-								console.log("iteration " + i, data);
+								console.log("Iterate : " + i);
+								console.log(data);
 								if (i < 20) {
 									iterate(i + 1);
 								} else {
-									console.log("Fin du programme");
+									console.log("End of programm");
 									db.close();
 								}
 							}
