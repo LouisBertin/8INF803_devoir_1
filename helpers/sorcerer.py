@@ -2,6 +2,37 @@ from bs4 import BeautifulSoup
 from requests import get
 import helpers.tools as Tools
 
+def get_all(start, end):
+    sorcerer_array = []
+    for index in range(start, end):
+        url = "http://www.dxcontent.com/SDB_SpellBlock.asp?SDBID=" + str(index)
+        r = get(url).text
+        soup = BeautifulSoup(r, 'html.parser').find("div",{'class':'SpellDiv'})
+
+        try:
+            title = soup.find("div",{'class':'heading'}).find('p').get_text()
+        except AttributeError:
+            continue
+        school = get_school(soup.find("p",{'class':'SPDet'}))
+        level = get_level(soup.find("p",{'class':'SPDet'}))
+        casting_time = get_casting_time(soup.findAll("p", {"class": "SPDet"})[1])
+        components = get_component(soup.findAll("p", {"class": "SPDet"})[2])
+        range_value = get_range(soup.findAll("p", {"class": "SPDet"})[3])
+        effect = get_effect(soup.findAll("p", {"class": "SPDet"})[4])
+        try:
+            duration = get_duration(soup.findAll("p", {"class": "SPDet"})[5])
+        except IndexError:
+            duration = 'null'
+        try:
+            spell_resistance = get_spell_resistance(soup.findAll("p", {"class": "SPDet"})[6])
+        except IndexError:
+            spell_resistance = 'null'
+        description = soup.find("div",{'class':'SPDesc'}).get_text()
+
+        sorcerer = (casting_time, components, description, duration, effect, index, level, range_value, school, spell_resistance, title)
+        sorcerer_array = sorcerer_array + [sorcerer]
+
+    return sorcerer_array
 
 def get_all_sorcerer(start, end):
     sorcerer_array = []
