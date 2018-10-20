@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from requests import get
 import helpers.tools as Tools
 
+
 def get_all_sorcerer(start, end):
     sorcerer_array = []
     for index in range(start, end):

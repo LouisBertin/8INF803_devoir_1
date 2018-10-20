@@ -14,6 +14,7 @@ def isCorrectLevelSpell(spell):
     else:
         return False
 
+
 def isVocalSpell(spell):
     if "V" not in spell['components'] :
         return False
@@ -41,6 +42,7 @@ def _map(spells):
 # TODO : Que faire ?
 def _reduce(spells):
     y = []
+
 
 # Filtre les sorts, retourne les sorts de niveau inférieur à 5 qui sont vocaux
 def _filter(spells):
