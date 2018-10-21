@@ -1,8 +1,8 @@
-#8INF803 - Devoir 1
+# 8INF803 - Devoir 1
 
 Jérémi CHEVALLIER, Louins Bertin, Marine VANDAMME
 
-##Prérequis
+## Prérequis
 MogoDB
 ```
 pip install pymongo
