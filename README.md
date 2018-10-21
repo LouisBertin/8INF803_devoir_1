@@ -1,4 +1,19 @@
-8INF803 - Devoir 1
-======
+#8INF803 - Devoir 1
 
-[Lien vers le devoir](https://docs.google.com/document/d/1QA8RDcY1UK6R8PBwjU1qmb8uP04dXJVF14EAV_645iI/edit#) :nerd_face:
+Jérémi CHEVALLIER, Louins Bertin, Marine VANDAMME
+
+##Prérequis
+MogoDB
+```
+pip install pymongo
+```
+SQlite
+```
+pip install sqlite
+```
+
+## Execution
+Lancer le ficher main.py
+```
+python main.py
+```

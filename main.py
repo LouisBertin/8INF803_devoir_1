@@ -1,4 +1,6 @@
 from pprint import pprint
+import sqlite3
+import helpers.db_manager as DBmanager
 import helpers.sorcerer as Sorcerer
 import helpers.mapReduce as MapReduce
 import helpers.tools as Tools
@@ -9,7 +11,7 @@ db = Tools.connectionMongoDb()
 
 option = True
 while option:
-    print("""   1. Wrap Dungeons and dragons spells in MongoDb\n   2. MapReduce the data in MongoDb\n   Other option quit the program""")
+    print("""   1. Wrap Dungeons and dragons spells\n   2. MapReduce the data in MongoDb\n   3. Use sqlite to save Pito   Other option quit the program""")
     option = input("\n   What would you like to do? ")
     if option == "1":
         # Max number spell is 1976 (change to test as you wish)
@@ -39,6 +41,20 @@ while option:
         for spell in filtered:
             pprint(spell['title'])
         print("\n The spell List (with more info) is stored in the projet folder, it's named data.txt \n\n")
+    elif option =="3":
+        #Connect DB
+        #connection = sqlite3.connect('tp1.db')
+        #c = connection.cursor()
+        #Create table
+        print("\nProcessing ...\n")
+        tab=Sorcerer.get_all(1,1976)
+        DBmanager.create_table()
+        #Insert each sorcerer
+        DBmanager.insert_sorcerers(tab)
+        #Find sorcerer to save Pito
+        print("\n These are the sorcerers that can save Pito : \n")
+        DBmanager.save_pito();
+        print ("\n\n")
     else:
         option = False
         print("\n Bye, see you soon!")
