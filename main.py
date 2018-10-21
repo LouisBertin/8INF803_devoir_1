@@ -11,7 +11,7 @@ db = Tools.connectionMongoDb()
 
 option = True
 while option:
-    print("""   1. Wrap Dungeons and dragons spells\n   2. MapReduce the data in MongoDb\n   3. Use sqlite to save Pito   Other option quit the program""")
+    print("""   1. Wrap Dungeons and dragons spells\n   2. MapReduce the data in MongoDb\n   3. Use sqlite to save Pito\n   Other option quit the program""")
     option = input("\n   What would you like to do? ")
     if option == "1":
         # Max number spell is 1976 (change to test as you wish)

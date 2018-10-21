@@ -13,7 +13,7 @@ pip install sqlite
 ```
 
 ## Execution
-Lancer le ficher main.py
+Lancer le fichier main.py
 ```
 python main.py
 ```
