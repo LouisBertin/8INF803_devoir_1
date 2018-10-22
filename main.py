@@ -29,16 +29,16 @@ while option:
         spells = Tools.getDataFromTheCollection(collection)
         # Map data
         mapped = MapReduce._map(spells)
-        # Filter data
-        filtered = MapReduce._filter(mapped)
+        # Reduce data
+        reduced = MapReduce._reduce(mapped)
         # Write data in a file
         with open('data.txt', 'w') as f:
-            for item in filtered:
+            for item in reduced:
                 f.write("%s\n" % item)
         f.close()
         # Print data
         print("\n Spells which can be use by Pitto to save himself")
-        for spell in filtered:
+        for spell in reduced:
             pprint(spell['title'])
         print("\n The spell List (with more info) is stored in the projet folder, it's named data.txt \n\n")
     elif option =="3":

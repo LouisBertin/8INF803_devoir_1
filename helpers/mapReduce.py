@@ -1,7 +1,6 @@
 from pprint import pprint
 
-
-# TODO : Refactoring
+# Retourne true si le sort est le niveau du sort est inférieur ou égale à 4
 def isCorrectLevelSpell(spell):
     str_level = spell['level']
     # Fix the error when level is equal to "" (can't be casted to int)
@@ -15,6 +14,7 @@ def isCorrectLevelSpell(spell):
         return False
 
 
+# Retourne true si le sort est purement vocable, false sinon
 def isVocalSpell(spell):
     if "V" not in spell['components'] :
         return False
@@ -25,7 +25,7 @@ def isVocalSpell(spell):
             return True
 
 
-# TODO : Est-ce correct ? Est-ce utile ?
+# Modifie les données en ne gardant que les données utiles
 def _map(spells):
     y = []
     for x in spells:
@@ -39,13 +39,8 @@ def _map(spells):
         y.append(z)
     return y
 
-# TODO : Que faire ?
-def _reduce(spells):
-    y = []
-
-
 # Filtre les sorts, retourne les sorts de niveau inférieur à 5 qui sont vocaux
-def _filter(spells):
+def _reduce(spells):
     y = []
     for x in spells:
         if isCorrectLevelSpell(x):
