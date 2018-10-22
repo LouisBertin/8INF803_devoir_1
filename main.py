@@ -37,7 +37,7 @@ while option:
                 f.write("%s\n" % item)
         f.close()
         # Print data
-        print("\n Spells which can be use by Pitto to save himself")
+        print("\n Spells which can be used by Pitto to save himself")
         for spell in reduced:
             pprint(spell['title'])
         print("\n The spell List (with more info) is stored in the projet folder, it's named data.txt \n\n")
@@ -52,7 +52,7 @@ while option:
         #Insert each sorcerer
         DBmanager.insert_sorcerers(tab)
         #Find sorcerer to save Pito
-        print("\n These are the sorcerers that can save Pito : \n")
+        print("\n These are the sorcerer spells that can save Pito : \n")
         DBmanager.save_pito();
         print ("\n\n")
     else:
